@@ -1,0 +1,17 @@
+{
+  "name": "tour-day-india-server",
+  "version": "1.0.0",
+  "description": "Backend for Tour de France India Virtual Peloton — registration, login and profiles",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "connect-pg-simple": "^10.0.0",
+    "pg": "^8.13.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5"
+  }
+}

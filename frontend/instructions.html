@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Before Every Stage · India Virtual Peloton</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet" />
+<style>
+/* ─── Theme tokens ─────────────────────────────────────────────── */
+:root{
+  --background:#ffffff;
+  --foreground:#0a0a0a;
+  --primary:#0a0a0a;
+  --accent:#ffff00;
+  --destructive:#d4183d;
+  --border:rgba(0,0,0,0.1);
+  --serif:'Fraunces',serif;
+  --sans:'Bricolage Grotesque',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--background);color:var(--primary);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body{padding-bottom:76px;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--sans);cursor:pointer}
+em{font-style:normal}
+.serif{font-family:var(--serif)}
+.tabnum{font-variant-numeric:tabular-nums}
+.upper{text-transform:uppercase}
+img{display:block}
+input{font-family:var(--sans)}
+input:focus-visible,button:focus-visible{outline:none}
+::selection{background:var(--accent);color:var(--primary)}
+
+@keyframes marquee-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ─── Layout shell ─────────────────────────────────────────────── */
+.shell{min-height:100vh;display:flex;flex-direction:column;background:#fff;padding-bottom:76px}
+
+/* ─── Nav ──────────────────────────────────────────────────────── */
+.nav{border-bottom:1px solid var(--border);position:relative;z-index:50;background:#fff}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 32px}
+.logo-wrap{display:flex;align-items:center;gap:12px}
+.logo-wrap img{height:38px;width:auto;object-fit:contain}
+.logo-meta{font-size:11px;font-weight:300;line-height:1.2;border-left:1px solid rgba(10,10,10,.2);padding-left:12px}
+.logo-meta .l1{font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.5}
+.logo-meta .l2{font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+.nav-links{display:flex;align-items:center;gap:28px;font-size:14px}
+.nav-links button.link{background:none;border:none;font-size:14px;color:var(--primary);transition:color .15s}
+.nav-links button.link:hover{color:var(--accent);text-shadow:0 0 0 var(--primary)}
+.nav-links button.link:hover{color:#0a0a0a;background:var(--accent)}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.btn-outline{border:1px solid var(--primary);color:var(--primary);font-size:13px;letter-spacing:.02em;padding:9px 20px;background:transparent;transition:.15s}
+.btn-outline:hover{background:var(--primary);color:var(--accent)}
+.btn-solid{background:var(--primary);color:var(--accent);font-size:13px;letter-spacing:.02em;padding:9px 20px;border:none;transition:opacity .15s}
+.btn-solid:hover{opacity:.9}
+.nav-username{font-size:14px;color:var(--primary);white-space:nowrap}
+.nav-username b{font-weight:500}
+.hamburger{display:none;background:none;border:none;padding:8px;color:var(--primary)}
+.mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 10px 24px rgba(0,0,0,.12);flex-direction:column}
+.mobile-menu.open{display:flex}
+.mobile-menu .mlink{text-align:left;padding:16px 20px;font-size:15px;border-bottom:1px solid var(--border);color:rgba(10,10,10,.6);background:none;border-left:none;border-right:none;border-top:none}
+.mobile-menu .mlink:hover{color:var(--primary)}
+.mobile-cta{display:flex;gap:12px;padding:16px 20px}
+.mobile-cta button{flex:1;font-size:13px;padding:12px}
+
+/* ─── Marquee ──────────────────────────────────────────────────── */
+.marquee{background:var(--accent);color:var(--primary);overflow:hidden;white-space:nowrap;border-bottom:1px solid var(--primary)}
+.marquee-track{display:inline-block;padding:7px 0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;animation:marquee-scroll 28s linear infinite}
+.marquee-track span{margin:0 28px}
+
+/* ─── Hero grid ────────────────────────────────────────────────── */
+.hero{flex:1;border-bottom:1px solid var(--border)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr}
+.hero-left{display:flex;flex-direction:column;border-right:1px solid var(--border)}
+.hero-mobile{display:none;flex-direction:column}
+
+.route-map{border-bottom:1px solid var(--border);background:#fff;padding:0}
+.route-map img{width:100%;height:420px;object-fit:contain;object-position:center}
+
+/* ─── Stage list ───────────────────────────────────────────────── */
+.stage-list{flex:1;border-top:1px solid var(--border);padding:16px 28px}
+.stage-scroll{overflow-y:auto;max-height:300px;scrollbar-width:none}
+.stage-scroll::-webkit-scrollbar{display:none}
+.stage-row{display:grid;grid-template-columns:72px 96px 72px 1fr 1fr;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;position:relative}
+.stage-row:last-child{border-bottom:none}
+.stage-row.rest{opacity:.7}
+.stage-row.past{opacity:.4}
+.stage-row.today{background:var(--accent);margin:0 -4px;padding-left:12px;padding-right:12px;border-left:4px solid #0a0a0a}
+.stage-row span{padding:0 8px}
+.stage-row span.pl0{padding-left:0}
+.stage-row .muted{color:rgba(10,10,10,.4)}
+.stage-row .med{font-weight:500}
+.stage-row .dist-unit{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(10,10,10,.5);margin-left:4px;vertical-align:middle}
+.stage-row .loc{color:rgba(10,10,10,.5)}
+.truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ─── Your stage ───────────────────────────────────────────────── */
+.your-stage{background:var(--accent);display:flex;flex-direction:column}
+.your-stage-empty{background:var(--accent);display:flex;flex-direction:column;justify-content:center;padding:32px;min-height:520px}
+.empty-inner{display:flex;flex-direction:column;align-items:flex-start;gap:18px;max-width:360px}
+.empty-inner h3{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.05;letter-spacing:-.01em;color:var(--primary)}
+.empty-inner p{font-size:15px;line-height:1.6;color:rgba(10,10,10,.75);max-width:320px}
+.btn-register{margin-top:6px;background:var(--primary);color:var(--accent);border:none;padding:16px 22px;font-size:15px;letter-spacing:.02em;display:inline-flex;align-items:center;gap:10px;transition:transform .15s}
+.btn-register:hover{transform:translateY(-1px)}
+
+.ys-header{background:var(--primary);padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
+.ys-header .lbl{display:flex;align-items:center;gap:10px}
+.ys-header .lbl span{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,0,.7)}
+.ys-header .pill{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,0,.5);border:1px solid rgba(255,255,0,.2);padding:2px 8px}
+.ys-body{display:flex;flex-direction:column;flex:1;padding:24px 32px 32px;gap:24px}
+.ys-typelabel{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,10,10,.5);margin-bottom:8px}
+.ys-instruction{font-family:var(--serif);font-weight:500;color:var(--primary);line-height:1.15;letter-spacing:-.01em;font-size:clamp(26px,3vw,36px)}
+.ys-goal{margin-top:16px;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(10,10,10,.3);padding:6px 12px}
+.ys-goal .g-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,10,10,.5)}
+.ys-goal .g-sep{width:1px;height:12px;background:rgba(10,10,10,.2)}
+.ys-goal .g-val{font-size:13px;font-weight:500;color:var(--primary);letter-spacing:.02em}
+.ys-note{margin-top:10px;font-size:12.5px;color:rgba(10,10,10,.55);line-height:1.6}
+.ys-zone{display:flex;align-items:center;gap:8px}
+.ys-zone .z-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,10,10,.45)}
+.ys-zone .z-val{border:1px solid rgba(10,10,10,.4);padding:4px 10px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);font-weight:500}
+
+/* Deadline timer */
+.deadline{border-width:1.5px;border-style:solid;padding:12px 16px}
+.deadline.normal{border-color:rgba(10,10,10,.25);background:transparent}
+.deadline.urgent{border-color:var(--primary);background:var(--primary)}
+.deadline.expired{border-color:rgba(212,24,61,.4);background:rgba(212,24,61,.05)}
+.deadline-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.deadline .dl-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px;color:rgba(10,10,10,.45)}
+.deadline.urgent .dl-lbl{color:rgba(255,255,0,.7)}
+.deadline .dl-time{font-size:28px;font-weight:400;font-variant-numeric:tabular-nums;letter-spacing:-.01em;line-height:1;color:var(--primary)}
+.deadline.urgent .dl-time{color:var(--accent)}
+.deadline .dl-urgent-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,0,.6);margin-left:4px}
+.deadline .dl-expired{font-size:13px;color:rgba(212,24,61,.8)}
+.deadline .dl-right{text-align:right;font-size:11px;line-height:1.6;color:rgba(10,10,10,.4)}
+.deadline.urgent .dl-right{color:rgba(255,255,0,.55)}
+.deadline-bar{margin-top:10px;height:3px;background:rgba(10,10,10,.1);width:100%;overflow:hidden}
+.deadline-bar>span{display:block;height:100%;background:rgba(10,10,10,.3);transition:width 1s}
+.deadline.urgent .deadline-bar>span{background:var(--accent)}
+
+/* Log entry */
+.log-wrap{margin-top:auto}
+.log-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,10,10,.5);margin-bottom:12px}
+.log-fields{display:flex;flex-direction:column;gap:10px}
+.log-input{width:100%;background:transparent;border:1.5px solid rgba(10,10,10,.4);padding:10px 16px;font-size:14px;color:var(--primary)}
+.log-input::placeholder{color:rgba(10,10,10,.4)}
+.log-input:focus{border-color:var(--primary)}
+.log-input.err{border-color:var(--destructive)}
+.field-err{margin-top:4px;font-size:11px;color:var(--destructive)}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stats-row .log-input{padding:10px 12px}
+.upload-btn{width:100%;border:1.5px dashed rgba(10,10,10,.3);padding:12px 16px;display:flex;align-items:center;gap:12px;background:transparent;transition:border-color .15s}
+.upload-btn:hover{border-color:rgba(10,10,10,.6)}
+.upload-btn.err{border-color:var(--destructive)}
+.upload-btn .u-txt{font-size:13px;color:rgba(10,10,10,.45);text-align:left}
+.upload-btn:hover .u-txt{color:rgba(10,10,10,.7)}
+.upload-preview{position:relative;border:1.5px solid rgba(10,10,10,.4);overflow:hidden;height:90px}
+.upload-preview img{width:100%;height:100%;object-fit:cover}
+.upload-preview .rm{position:absolute;top:6px;right:6px;background:var(--primary);color:var(--accent);width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:none}
+.log-submit{width:100%;background:var(--primary);color:var(--accent);padding:12px;font-size:13px;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:8px;border:none;transition:transform .15s}
+.log-submit:hover{transform:translateY(-1px)}
+.log-success{background:var(--primary);padding:20px;display:flex;flex-direction:column;gap:12px}
+.log-success .row{display:flex;align-items:center;gap:10px}
+.log-success .chk{width:20px;height:20px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.log-success .msg{font-size:13px;font-weight:500;color:var(--accent);letter-spacing:.02em}
+.log-success p{font-size:12px;color:rgba(255,255,0,.6);line-height:1.6}
+.rest-box{margin-top:auto;border:1px solid rgba(10,10,10,.2);padding:12px 16px;font-size:13px;color:rgba(10,10,10,.55);line-height:1.6}
+.rest-box strong{color:var(--primary);font-weight:500}
+
+/* ─── Sections ─────────────────────────────────────────────────── */
+.section{border-top:1px solid var(--border);padding:56px 32px;background:#fff}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:32px}
+.section-head h2{font-family:var(--serif);font-weight:500;line-height:1;letter-spacing:-.01em;color:var(--primary);font-size:clamp(30px,4vw,44px)}
+.section-head p{font-size:14px;color:rgba(10,10,10,.55);max-width:360px;margin-top:8px}
+.filters{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.filter-group{display:flex;border:1px solid var(--primary)}
+.filter-group button{border:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border-right:1px solid var(--primary);background:transparent;color:var(--primary);transition:.15s}
+.filter-group button:last-child{border-right:none}
+.filter-group button:hover{background:rgba(10,10,10,.05)}
+.filter-group button.active{background:var(--primary);color:var(--accent)}
+
+.table-wrap{border:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.table-wrap::-webkit-scrollbar{display:none}
+table{width:100%;border-collapse:collapse}
+.lb-table{min-width:640px}
+.streak-table{min-width:380px}
+thead tr{background:rgba(10,10,10,.03)}
+th{text-align:left;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(10,10,10,.45);font-weight:400;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
+th.r{text-align:right}
+th.on{color:var(--primary)}
+th .sortmark{margin-left:4px;color:var(--accent);background:var(--primary);padding:1px 4px;font-size:9px;vertical-align:middle}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(10,10,10,.02)}
+tbody tr.first{background:var(--accent)}
+tbody tr.first:hover{background:var(--accent)}
+td{padding:16px 12px}
+td.rank{font-size:20px;font-weight:400;width:52px;text-align:center;color:rgba(10,10,10,.35)}
+tr.first td.rank{color:var(--primary);font-weight:500}
+td .rider-name{font-weight:500;display:block;font-size:14px;color:var(--primary);line-height:1.2}
+td .rider-city{font-size:12px;color:rgba(10,10,10,.55);letter-spacing:.01em}
+.zone-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(10,10,10,.4);color:rgba(10,10,10,.7);padding:2px 8px;display:inline-block}
+tr.first .zone-tag{border-color:var(--primary);color:var(--primary)}
+.metric{text-align:right}
+.metric .val{font-size:18px;font-weight:400;letter-spacing:-.01em;font-variant-numeric:tabular-nums;color:rgba(10,10,10,.7)}
+.metric .val.hi{color:var(--primary)}
+.metric .unit{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(10,10,10,.4);margin-left:4px;vertical-align:middle}
+.streak-info{border:1px solid var(--border);padding:8px 12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(10,10,10,.4)}
+.progress-cell{display:flex;align-items:center;justify-content:flex-end;gap:12px}
+.progress-track{width:96px;height:3px;background:rgba(10,10,10,.1);flex-shrink:0}
+tr.first .progress-track{background:rgba(10,10,10,.2)}
+.progress-fill{height:100%;background:rgba(10,10,10,.4)}
+tr.first .progress-fill{background:rgba(10,10,10,.6)}
+.progress-num{font-size:13px;color:rgba(10,10,10,.55);font-variant-numeric:tabular-nums;width:48px;text-align:right}
+.progress-num .of{color:rgba(10,10,10,.3)}
+.streak-days .n{font-size:20px;font-weight:400;color:var(--primary);font-variant-numeric:tabular-nums}
+.streak-days .u{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(10,10,10,.4);margin-left:4px;vertical-align:middle}
+
+/* ─── Clock ────────────────────────────────────────────────────── */
+.clock{position:fixed;bottom:80px;right:24px;z-index:50;background:var(--primary);color:var(--accent);padding:12px 16px;border:1px solid var(--accent);box-shadow:0 12px 32px rgba(0,0,0,.28)}
+.clock .fr{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,0,.7);margin-bottom:6px}
+.clock .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:middle;animation:pulse-dot 1.6s ease-in-out infinite}
+.clock .t{display:flex;align-items:baseline;gap:6px}
+.clock .t strong{font-weight:400;font-size:20px;letter-spacing:.06em;color:#fff;font-variant-numeric:tabular-nums}
+.clock .t .ampm{font-size:11px;letter-spacing:.1em;color:rgba(255,255,0,.6)}
+
+/* ─── Sticky progress ──────────────────────────────────────────── */
+.sticky-progress{position:fixed;bottom:0;left:0;right:0;z-index:40;background:#fff;border-top:1.5px solid var(--primary);padding:10px 20px 12px}
+.sp-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.sp-head .l{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,10,10,.55)}
+.sp-head .r{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--primary)}
+.sp-scroll{overflow-x:auto;display:flex;justify-content:center;scrollbar-width:none}
+.sp-scroll::-webkit-scrollbar{display:none}
+.sp-track{display:flex;gap:3px;padding-top:20px;padding-bottom:2px}
+.seg{width:34px;height:10px;flex-shrink:0;position:relative}
+.seg>span{display:block;width:100%;height:100%}
+.seg .f-today{background:var(--accent);outline:2px solid var(--primary);outline-offset:1px}
+.seg .f-rest{background:var(--primary)}
+.seg .f-past{background:rgba(10,10,10,.12)}
+.seg .f-future{background:rgba(10,10,10,.06);border:1px solid rgba(10,10,10,.1)}
+.seg .marker{position:absolute;top:-18px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.seg .marker .stem{width:1px;height:8px;background:var(--primary)}
+.seg .marker .dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
+
+/* ─── Credit line ──────────────────────────────────────────────── */
+.credit-line{font-size:10px;color:rgba(10,10,10,.4);text-align:center;letter-spacing:.03em;padding-top:6px}
+.credit-fixed{position:fixed;left:0;right:0;bottom:10px;z-index:45;pointer-events:none}
+
+/* ─── Mobile floating CTA ──────────────────────────────────────── */
+.mobile-float{display:none;position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:50;pointer-events:none}
+.mobile-float button{pointer-events:auto;background:var(--primary);color:var(--accent);font-size:13px;letter-spacing:.04em;padding:14px 24px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.3);border:none;transition:transform .15s}
+.mobile-float button:hover{transform:translateY(-2px)}
+
+/* ─── Modals ───────────────────────────────────────────────────── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
+.overlay.scroll{align-items:flex-start;overflow-y:auto;padding:24px 16px}
+.overlay.top{align-items:flex-start}
+.modal{background:#fff;width:100%;position:relative}
+.modal.w440{max-width:440px}
+.modal.w560{max-width:560px}
+.modal.w580{max-width:580px}
+.modal.w660{max-width:660px}
+.modal-header{background:var(--primary);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+.modal-header .mh-kicker{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,0,.6);margin-bottom:4px}
+.modal-header h2{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1;color:var(--accent);letter-spacing:-.01em}
+.modal-close{background:none;border:none;color:rgba(255,255,0,.5);padding:4px;transition:color .15s}
+.modal-close:hover{color:var(--accent)}
+.about-close{background:none;border:none;color:var(--primary);padding:8px;position:absolute;top:14px;right:14px}
+
+/* form fields */
+.fields{padding:28px 32px 8px;display:grid;gap:20px}
+.field label{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--primary);margin-bottom:8px}
+.inp{width:100%;background:transparent;border:1.5px solid rgba(10,10,10,.25);padding:12px 16px;font-size:15px;color:var(--primary);transition:border-color .15s}
+.inp::placeholder{color:rgba(10,10,10,.3)}
+.inp:hover{border-color:rgba(10,10,10,.5)}
+.inp:focus{border-color:var(--primary)}
+.inp.err{border-color:var(--destructive)}
+.field-hint{margin-top:6px;font-size:12px;color:rgba(10,10,10,.5);display:flex;align-items:center;gap:6px}
+.field-hint strong{color:rgba(10,10,10,.7);font-weight:500}
+.err-msg{margin-top:6px;font-size:12px;color:var(--destructive)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.relative{position:relative}
+.pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-1px)translateY(-50%);background:none;border:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(10,10,10,.4);transition:color .15s}
+.pw-toggle:hover{color:var(--primary)}
+.pw-strength{margin-top:8px;display:flex;align-items:center;gap:8px}
+.pw-bars{display:flex;gap:4px;flex:1}
+.pw-bars>div{height:3px;flex:1;background:rgba(10,10,10,.1);transition:background .15s}
+.pw-bars>div.s1{background:var(--destructive)}
+.pw-bars>div.s2{background:#facc15}
+.pw-bars>div.s3{background:#22c55e}
+.pw-strength .plabel{font-size:11px;color:rgba(10,10,10,.5);letter-spacing:.06em}
+.at-prefix{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:rgba(10,10,10,.35);font-size:15px}
+.zone-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.zone-card{text-align:left;padding:16px;border:1.5px solid rgba(10,10,10,.2);background:transparent;transition:.15s}
+.zone-card:hover{border-color:rgba(10,10,10,.5)}
+.zone-card.sel{background:var(--accent);border-color:var(--primary)}
+.zone-card .zc-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px}
+.zone-card .zc-km{font-family:var(--serif);font-weight:500;font-size:21px;line-height:1;color:var(--primary)}
+.zone-card .zc-tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border:1px solid rgba(10,10,10,.25);color:rgba(10,10,10,.45);flex-shrink:0}
+.zone-card.sel .zc-tag{border-color:var(--primary);color:var(--primary)}
+.zone-card .zc-desc{font-size:12.5px;line-height:1.6;color:rgba(10,10,10,.45)}
+.zone-card.sel .zc-desc{color:rgba(10,10,10,.75)}
+
+.modal-footer{padding:20px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.modal-footer p{font-size:13px;color:rgba(10,10,10,.5)}
+.switch-link{background:none;border:none;color:var(--primary);font-weight:500;border-bottom:1px solid var(--accent);padding-bottom:1px;transition:.15s}
+.switch-link:hover{background:var(--accent)}
+.btn-submit{background:var(--primary);color:var(--accent);padding:14px 28px;font-size:15px;letter-spacing:.02em;border:none;display:inline-flex;align-items:center;gap:10px;transition:transform .15s;flex-shrink:0}
+.btn-submit:hover{transform:translateY(-1px)}
+
+/* register success */
+.reg-success{padding:48px 32px;display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.reg-success .ico{background:var(--accent);width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+.reg-success h3{font-family:var(--serif);font-weight:500;font-size:28px;line-height:1.2;color:var(--primary);margin-bottom:8px}
+.reg-success p{font-size:15px;color:rgba(10,10,10,.65);line-height:1.6;max-width:440px}
+.reg-success strong{color:var(--primary);font-weight:500}
+.reg-success .back{margin-top:8px;background:var(--primary);color:var(--accent);padding:14px 24px;font-size:14px;letter-spacing:.02em;border:none;transition:transform .15s}
+.reg-success .back:hover{transform:translateY(-1px)}
+
+/* instructions */
+.inst-body{padding:28px 32px;display:flex;flex-direction:column;gap:32px}
+.inst-intro{font-size:14px;color:rgba(10,10,10,.6);line-height:1.6}
+.inst-sect-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.inst-sect-head .bar{width:6px;height:20px;flex-shrink:0}
+.inst-sect-head .bar.acc{background:var(--accent)}
+.inst-sect-head .bar.pri{background:var(--primary)}
+.inst-sect-head h3{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--primary);line-height:1}
+.rule-list{border:1px solid var(--border);list-style:none}
+.rule-list li{display:flex;align-items:flex-start;gap:16px;padding:14px 20px;border-bottom:1px solid var(--border)}
+.rule-list li:last-child{border-bottom:none}
+.rule-list .rn{font-size:11px;color:rgba(10,10,10,.3);font-variant-numeric:tabular-nums;margin-top:2px;width:16px;flex-shrink:0}
+.rule-list .rt{font-size:14px;color:rgba(10,10,10,.8);line-height:1.4}
+.inst-footer{padding:16px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.inst-footer p{font-size:12px;color:rgba(10,10,10,.4);line-height:1.6;max-width:340px}
+.inst-footer button{background:var(--primary);color:var(--accent);padding:12px 24px;font-size:13px;letter-spacing:.04em;border:none;transition:transform .15s}
+.inst-footer button:hover{transform:translateY(-1px)}
+
+/* about */
+.about-modal{max-width:560px;width:100%;max-height:88vh;overflow-y:auto;position:relative;padding:40px 40px 34px;background:#fff}
+.about-modal h2{font-family:var(--serif);font-weight:500;font-size:28px;line-height:1.05;margin-bottom:18px;letter-spacing:-.01em;color:var(--primary)}
+.about-modal p{font-size:15px;line-height:1.6;margin-bottom:14px;color:rgba(10,10,10,.82)}
+.about-modal strong{font-weight:500;color:var(--primary)}
+.about-links{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.about-links li{display:flex;align-items:center;gap:10px;font-size:14px}
+.about-links a{color:var(--primary);border-bottom:2px solid var(--accent);padding-bottom:1px;transition:.15s}
+.about-links a:hover{background:var(--accent)}
+.about-official{margin-top:22px;padding-top:20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.04em}
+.about-official a{color:var(--primary);border-bottom:2px solid var(--accent);padding-bottom:1px;display:flex;align-items:center;gap:4px;transition:.15s}
+.about-official a:hover{background:var(--accent)}
+
+.icon{flex-shrink:0}
+
+/* ─── Responsive ───────────────────────────────────────────────── */
+@media (max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:block}
+  .hero-grid{display:none}
+  .hero-mobile{display:flex}
+  .nav-inner{padding:10px 20px}
+  .section{padding:56px 20px}
+  .mobile-float{display:block}
+  .grid2{grid-template-columns:1fr}
+  .zone-grid{grid-template-columns:1fr}
+  .fields{padding:28px 24px 8px}
+  .modal-header{padding:20px 24px}
+  .modal-footer{padding:20px 24px}
+}
+@media (max-width:480px){
+  .clock{right:12px;bottom:76px;padding:10px 12px}
+}
+
+/* ─── Standalone modal pages ───────────────────────────────────── */
+body.standalone-page{background:#fff;padding-bottom:0}
+body.standalone-page #app{min-height:100vh}
+body.standalone-page .overlay,
+body.standalone-page .overlay.scroll{position:static;min-height:100vh;inset:auto;background:#fff}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+window.__TDF_NAV_MODE__="pages";
+window.__TDF_PAGE__="instructions";
+
+</script>
+<script>
+window.__TDF_ASSETS__ = {
+  canvas: "",
+  logo: "data:image/png;base64,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",
+  wordmark: "data:image/png;base64,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"
+};
+
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   Tour de France 2026 · India Virtual Peloton
+   Vanilla-JS port of the original React/Vite Figma export.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Assets (base64 injected below by build) ──────────────────── */
+const ASSETS = window.__TDF_ASSETS__ || { canvas:"", logo:"", wordmark:"" };
+
+/* Navigation mode: "modal" = single-page (modals), "pages" = separate HTML files */
+const NAV_MODE = window.__TDF_NAV_MODE__ || "modal";
+const PAGE_URLS = { about:"about.html", login:"login.html", register:"register.html", instructions:"instructions.html", home:"home.html" };
+function go(page){ window.location.href = PAGE_URLS[page] || "home.html"; }
+function openOrGo(page){ if(NAV_MODE==="pages") go(page); else openModal(page); }
+
+/* ─── Data ─────────────────────────────────────────────────────── */
+// [date, type, distance_km, location]
+const STAGES = [
+  ["2026-07-04","Team Time Trial",19.6,"Barcelona, Spain"],
+  ["2026-07-05","Hilly",168.5,"Tarragona → Les Angles"],
+  ["2026-07-06","Mountain",195.9,"Granollers → Gavarnie-Gèdre"],
+  ["2026-07-07","Hilly",181.9,"Les Angles → Carcassonne"],
+  ["2026-07-08","Flat",158.3,"Foix → Lannemezan"],
+  ["2026-07-09","Mountain",186.2,"Lannemezan → Pau"],
+  ["2026-07-10","Flat",175.1,"Hagetmau → Bordeaux"],
+  ["2026-07-11","Flat",180.4,"Bergerac → Périgueux"],
+  ["2026-07-12","Hilly",185.5,"Malemort → Ussel"],
+  ["2026-07-13","Rest",0,"Rest Day"],
+  ["2026-07-14","Mountain",166.6,"Cantal → Aurillac"],
+  ["2026-07-15","Flat",161.3,"Vichy → Nevers"],
+  ["2026-07-16","Flat",179.1,"Nevers → Chalon-sur-Saône"],
+  ["2026-07-17","Hilly",205.8,"Chalon-sur-Saône → Dole"],
+  ["2026-07-18","Mountain",155.3,"Mulhouse → Le Markstein"],
+  ["2026-07-19","Mountain",183.9,"Thonon-les-Bains → Haute-Savoie"],
+  ["2026-07-20","Rest",0,"Rest Day"],
+  ["2026-07-21","Individual Time Trial",26.1,"Évian-les-Bains"],
+  ["2026-07-22","Flat",174.7,"Voiron → Chambéry"],
+  ["2026-07-23","Mountain",185.2,"Chambéry → Alpe d'Huez"],
+  ["2026-07-24","Mountain",127.9,"Le Bourg d'Oisans → Orcières-Merlette"],
+  ["2026-07-25","Mountain",170.9,"Gap → Plateau de Solaison"],
+  ["2026-07-26","Flat",133.0,"Thoiry → Paris Champs-Élysées"],
+];
+
+const RIDING_STAGES_TOTAL = STAGES.filter(s=>s[1]!=="Rest").length;
+
+// [name, city, zone, time, elevation_m, distance_km] — populated live from /api/leaderboard
+let RIDERS = [];
+// [name, city, daysLogged, totalRidingStages] — derived from the same live data
+let STREAK = [];
+
+function minToLabel(min){
+  min=Math.round(min||0);
+  const h=Math.floor(min/60), m=min%60;
+  return h+"h "+String(m).padStart(2,"0")+"m";
+}
+
+async function fetchLeaderboard(){
+  try{
+    const res=await fetch("/api/leaderboard");
+    if(!res.ok) return;
+    const {riders}=await res.json();
+    RIDERS=riders.map(r=>[r.fullName,r.city||"",r.zone||0,minToLabel(r.timeMin),Math.round(r.elevationM||0),Math.round(r.distanceKm||0)]);
+    STREAK=riders.map(r=>[r.fullName,r.city||"",r.daysLogged||0,RIDING_STAGES_TOTAL]).sort((a,b)=>b[2]-a[2]);
+  }catch{}
+}
+
+const STAGE_INFO = {
+  "Team Time Trial":{label:"Time Trial",instruction:"Ride for exactly 60 minutes.",goal:"Maximum Distance"},
+  "Individual Time Trial":{label:"Time Trial",instruction:"Ride for exactly 60 minutes.",goal:"Maximum Distance"},
+  Hilly:{label:"Hilly Stage",instruction:"Ride 100 km.",goal:"Maximum Elevation Gain",note:"Flyovers and bridges count."},
+  Flat:{label:"Flat Stage",instruction:"Ride as far as possible during the day.",goal:"Maximum Distance"},
+  Mountain:{label:"Mountain Stage",instruction:"Ride as far as possible — push into the climbs.",goal:"Maximum Elevation Gain"},
+  Rest:{label:"Rest Day",instruction:"No ride today. Recover like a pro.",goal:"Rest logged"},
+};
+
+const ZONES = [
+  {km:550,tag:"Underdog Rider",label:"550 km",desc:"Perfect for your first grand tour experience. Build confidence, finish strong, and prove you belong in the peloton."},
+  {km:1300,tag:"Breakaway Rider",label:"1,300 km",desc:"You've gone beyond the basics. Take on longer stages, greater endurance, and experience what a true stage race feels like."},
+  {km:2200,tag:"Elite Contender",label:"2,200 km",desc:"This is where serious cyclists are tested. Multiple demanding stages, consistency, and resilience become the difference."},
+  {km:3333,tag:"I Am Greatest of All Time",label:"3,333 km",desc:"The complete Grand Tour challenge. Every stage matters, every kilometre counts. You're here to experience cycling at its highest level."},
+];
+
+const STAGE_END_CEST = {
+  "Team Time Trial":[19,15],"Individual Time Trial":[17,30],
+  Hilly:[17,15],Flat:[17,15],Mountain:[18,0],Rest:[0,0],
+};
+const STAGE_END_OVERRIDES = { "2026-07-26":[20,0] };
+
+/* ─── Helpers ──────────────────────────────────────────────────── */
+function toTimeMin(str){ const m=str.match(/(\d+)h\s*(\d+)m/); return m? +m[1]*60+ +m[2] :0; }
+function fmtShort(d){ return new Date(d+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"}); }
+function fmtLong(d){
+  const dt=new Date(d+"T00:00:00"), day=dt.getDate();
+  const suf=["th","st","nd","rd"], v=day%100;
+  const suffix=suf[(v-20)%10]||suf[v]||suf[0];
+  return dt.toLocaleDateString("en-GB",{day:"numeric",month:"long"}).replace(/^\d+/,day+suffix);
+}
+function getTodayIndex(){
+  const today=new Date().toISOString().slice(0,10);
+  let idx=STAGES.findIndex(s=>s[0]===today);
+  if(idx<0) idx = today<STAGES[0][0] ? 0 : STAGES.length-1;
+  return idx;
+}
+function getStageDeadline(idx){
+  const [date,type]=STAGES[idx];
+  if(type==="Rest") return null;
+  const [h,m]=STAGE_END_OVERRIDES[date]||STAGE_END_CEST[type]||[17,15];
+  const endUtc=new Date(`${date}T${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:00+02:00`);
+  return new Date(endUtc.getTime()+8*3600*1000);
+}
+const pad=n=>String(n).padStart(2,"0");
+function el(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ─── Lucide-style inline SVG icons ────────────────────────────── */
+const IC={
+  bike:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>',
+  arrow:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+  x:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+  menu:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>',
+  instagram:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>',
+  activity:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+  mail:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+  ext:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>',
+};
+function icon(name,size=18){ return IC[name].replace(/_S_/g,size); }
+function creditLine(fixed){ return `<div class="credit-line${fixed?' credit-fixed':''}">Designed by Avishek, Developed by Deb</div>`; }
+
+/* ─── App state ────────────────────────────────────────────────── */
+const state = {
+  isLoggedIn:false,
+  activeZone:1300,
+  todayIdx:getTodayIndex(),
+  modal:null,       // 'about' | 'login' | 'register' | 'instructions' | null
+  user:null,
+  myTodayRide:null,
+};
+
+async function applyLoggedInUser(user){
+  state.isLoggedIn=true; state.activeZone=user.zone||1300; state.user=user;
+  try{
+    const todayDate=STAGES[state.todayIdx][0];
+    const r=await fetch("/api/rides/me?date="+encodeURIComponent(todayDate));
+    if(r.ok){ const {ride}=await r.json(); state.myTodayRide=ride||null; }
+  }catch{}
+}
+let timers = [];
+function clearTimers(){ timers.forEach(clearInterval); timers=[]; }
+
+/* ─── Logo ─────────────────────────────────────────────────────── */
+function logoHTML(){
+  return `<div class="logo-wrap">
+    <img src="${ASSETS.wordmark}" alt="Tour de France" />
+    <div class="logo-meta">
+      <div class="l1">India</div>
+      <div class="l2">Virtual Peloton</div>
+    </div>
+  </div>`;
+}
+
+/* ─── Nav ──────────────────────────────────────────────────────── */
+function renderNav(){
+  const firstName = state.user&&state.user.fullName ? state.user.fullName.split(" ")[0] : "";
+  const cta = state.isLoggedIn
+    ? `<div class="nav-cta"><span class="nav-username">Hi, <b>${esc(firstName)}</b></span><button class="btn-outline" data-act="logout">Log out</button></div>`
+    : `<div class="nav-cta">
+         <button class="btn-outline" data-act="login">Log in</button>
+         <button class="btn-solid" data-act="register">Register</button>
+       </div>`;
+  const mCta = state.isLoggedIn
+    ? `<div class="mobile-cta"><span class="nav-username">Hi, <b>${esc(firstName)}</b></span><button class="btn-outline" data-act="logout">Log out</button></div>`
+    : `<div class="mobile-cta">
+         <button class="btn-outline" data-act="login">Log in</button>
+         <button class="btn-solid" data-act="register">Register</button>
+       </div>`;
+  const nav=el(`<nav class="nav">
+    <div class="nav-inner">
+      <a href="home.html">${logoHTML()}</a>
+      <div class="nav-links">
+        <button class="link" data-act="instructions">Instructions</button>
+        <button class="link" data-act="about">What is this?</button>
+        ${cta}
+      </div>
+      <button class="hamburger" data-act="toggle" aria-label="Toggle menu">${icon('menu',22)}</button>
+    </div>
+    <div class="mobile-menu">
+      <button class="mlink" data-act="instructions">Instructions</button>
+      <button class="mlink" data-act="about">What is this?</button>
+      ${mCta}
+    </div>
+  </nav>`);
+
+  const menu=nav.querySelector(".mobile-menu");
+  nav.addEventListener("click",e=>{
+    const b=e.target.closest("[data-act]"); if(!b) return;
+    const act=b.dataset.act;
+    if(act==="toggle"){
+      menu.classList.toggle("open");
+      const ham=nav.querySelector(".hamburger");
+      ham.innerHTML = menu.classList.contains("open")? icon('x',22):icon('menu',22);
+      return;
+    }
+    menu.classList.remove("open");
+    nav.querySelector(".hamburger").innerHTML=icon('menu',22);
+    if(act==="logout"){
+      fetch("/api/logout",{method:"POST"}).finally(()=>{
+        if(NAV_MODE==="pages"){ go("home"); return; }
+        state.isLoggedIn=false; state.user=null; state.myTodayRide=null; renderApp();
+      });
+      return;
+    }
+    if(NAV_MODE==="pages"){ go(act); return; }
+    if(act==="about")openModal("about");
+    if(act==="login")openModal("login");
+    if(act==="register")openModal("register");
+    if(act==="instructions")openModal("instructions");
+  });
+  return nav;
+}
+
+/* ─── Marquee ──────────────────────────────────────────────────── */
+function renderMarquee(){
+  const msg="This is not an official Tour de France website";
+  const items=Array(8).fill(msg).map(t=>`<span>${t} ●</span>`).join("");
+  return el(`<div class="marquee" aria-label="Disclaimer"><div class="marquee-track">${items}${items}</div></div>`);
+}
+
+/* ─── Route map ────────────────────────────────────────────────── */
+function renderRouteMap(){
+  return el(`<section class="route-map" aria-label="Tour de France 2026 route map">
+    <img src="${ASSETS.canvas}" alt="Tour de France 2026 route map — Barcelona to Paris" />
+  </section>`);
+}
+
+/* ─── Stage list ───────────────────────────────────────────────── */
+function renderStageList(){
+  const idx=state.todayIdx;
+  let stageN=0;
+  const rows=STAGES.map((s,i)=>{
+    const isRest=s[1]==="Rest";
+    if(!isRest)stageN++;
+    const sn=stageN, isToday=i===idx, isPast=i<idx;
+    const cls=["stage-row",isToday?"today":"",isRest?"rest":"",(isPast&&!isToday)?"past":""].filter(Boolean).join(" ");
+    if(isRest){
+      return `<div class="${cls}">
+        <span class="muted med pl0">—</span>
+        <span class="muted">${fmtLong(s[0])}</span>
+        <span class="muted">Rest</span>
+        <span class="muted">Rest Day</span>
+        <span class="muted truncate">${esc(s[3])}</span></div>`;
+    }
+    return `<div class="${cls}">
+      <span class="med pl0 truncate">Stage ${sn}</span>
+      <span class="truncate">${fmtLong(s[0])}</span>
+      <span class="med">${s[2]}<span class="dist-unit">km</span></span>
+      <span class="truncate">${esc(s[1])}</span>
+      <span class="loc truncate">${esc(s[3])}</span></div>`;
+  }).join("");
+
+  const sec=el(`<section class="stage-list" aria-label="All Tour de France stages">
+    <div class="stage-scroll" tabindex="0">${rows}</div></section>`);
+  requestAnimationFrame(()=>{
+    const sc=sec.querySelector(".stage-scroll");
+    const t=sc.querySelector(".today");
+    if(t) sc.scrollTop = t.offsetTop - sc.clientHeight/2 + t.clientHeight/2;
+  });
+  return sec;
+}
+
+/* ─── Your stage: empty ────────────────────────────────────────── */
+function renderYourStageEmpty(){
+  const sec=el(`<section class="your-stage-empty" aria-label="Your stage">
+    <div class="empty-inner">
+      ${icon('bike',38)}
+      <h3 class="serif">Ride with the peloton</h3>
+      <p>Log in to see today's challenge, pick your distance zone and start logging your kilometres.</p>
+      <button class="btn-register">Register for the ride ${icon('arrow',18)}</button>
+    </div></section>`);
+  sec.querySelector(".btn-register").onclick=()=>openOrGo("register");
+  return sec;
+}
+
+/* ─── Deadline timer ───────────────────────────────────────────── */
+function renderDeadline(idx){
+  const deadline=getStageDeadline(idx);
+  if(!deadline) return document.createComment("no-deadline");
+  const wrap=el(`<div class="deadline"></div>`);
+  const [date,type]=STAGES[idx];
+  const [eh,em]=STAGE_END_OVERRIDES[date]||STAGE_END_CEST[type]||[17,15];
+  const endLabel=`${pad(eh)}:${pad(em)} CEST`;
+  const dlLabel=new Date(deadline).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Paris"});
+
+  function tick(){
+    const ms=Math.max(0,deadline.getTime()-Date.now());
+    const tot=Math.floor(ms/1000);
+    const hh=Math.floor(tot/3600),mm=Math.floor((tot%3600)/60),ss=tot%60;
+    const isExpired=ms===0, isUrgent=!isExpired&&hh<2;
+    wrap.className="deadline "+(isExpired?"expired":isUrgent?"urgent":"normal");
+    wrap.innerHTML=`
+      <div class="deadline-top">
+        <div>
+          <div class="dl-lbl">${isExpired?"Submission closed":"Time to submit"}</div>
+          ${isExpired
+            ?`<p class="dl-expired">The 8-hour upload window has closed for this stage.</p>`
+            :`<div style="display:flex;align-items:baseline;gap:4px">
+                <span class="dl-time">${pad(hh)}:${pad(mm)}:${pad(ss)}</span>
+                ${isUrgent?`<span class="dl-urgent-tag">urgent</span>`:""}
+              </div>`}
+        </div>
+        ${isExpired?"":`<div class="dl-right"><div>Stage ends ~${endLabel}</div><div>+8 h buffer · ${dlLabel} CEST deadline</div></div>`}
+      </div>
+      ${isExpired?"":`<div class="deadline-bar"><span style="width:${Math.min(100,(ms/(8*3600*1000))*100)}%"></span></div>`}`;
+  }
+  tick(); timers.push(setInterval(tick,1000));
+  return wrap;
+}
+
+/* ─── Your stage: active ───────────────────────────────────────── */
+function renderYourStageActive(){
+  const idx=state.todayIdx, zone=state.activeZone;
+  const type=STAGES[idx][1], isRest=type==="Rest";
+  const info=STAGE_INFO[type]||STAGE_INFO.Flat;
+  let stageNo=0; for(let i=0;i<=idx;i++) if(STAGES[i][1]!=="Rest")stageNo++;
+
+  const sec=el(`<section class="your-stage" aria-label="Your stage">
+    <div class="ys-header">
+      <div class="lbl">${icon('bike',14)}<span>Your Stage</span></div>
+      ${isRest?"":`<span class="pill">Stage ${stageNo} · ${fmtShort(STAGES[idx][0])}</span>`}
+    </div>
+    <div class="ys-body">
+      <div>
+        <div class="ys-typelabel">${esc(info.label)}</div>
+        <p class="ys-instruction">${esc(info.instruction)}</p>
+        <div class="ys-goal">
+          <span class="g-lbl">Goal</span><span class="g-sep"></span>
+          <span class="g-val">${esc(info.goal)}</span>
+        </div>
+        ${info.note?`<p class="ys-note">${esc(info.note)}</p>`:""}
+      </div>
+      ${isRest?"":`<div class="ys-zone">
+        <span class="z-lbl">Your Zone</span>
+        <span class="z-val">${zone.toLocaleString()} km</span></div>`}
+      <div class="dl-slot"></div>
+      <div class="log-slot"></div>
+    </div>
+  </section>`);
+
+  if(!isRest){
+    sec.querySelector(".dl-slot").replaceWith(renderDeadline(idx));
+    sec.querySelector(".log-slot").replaceWith(renderLogEntry());
+  }else{
+    sec.querySelector(".dl-slot").remove();
+    const next=STAGES[idx+1]?fmtShort(STAGES[idx+1][0]):"soon";
+    sec.querySelector(".log-slot").replaceWith(el(
+      `<div class="rest-box">Next stage resumes <strong>${next}.</strong></div>`));
+  }
+  return sec;
+}
+
+/* ─── Log entry (mandatory strava + photo) ─────────────────────── */
+function parseTimeToMin(str){
+  const m=String(str||"").trim().match(/^(\d+):(\d{1,2})$/);
+  return m?(+m[1])*60+(+m[2]):null;
+}
+
+function renderLogEntry(){
+  const existing=state.myTodayRide;
+  let strava=existing?existing.stravaLink:"", image=null, preview=existing?existing.photo:null,
+      km=existing&&existing.distanceKm!=null?String(existing.distanceKm):"",
+      timeStr=existing&&existing.timeMin!=null?String(Math.floor(existing.timeMin/60))+":"+String(existing.timeMin%60).padStart(2,"0"):"",
+      elev=existing&&existing.elevationM!=null?String(existing.elevationM):"",
+      logged=!!existing, errors={}, submitting=false;
+  const wrap=el(`<div class="log-wrap">
+    <div class="log-lbl">Log today's effort</div>
+    <div class="log-inner"></div>
+  </div>`);
+  const inner=wrap.querySelector(".log-inner");
+
+  function draw(){
+    if(logged){
+      inner.innerHTML=`<div class="log-success">
+        <div class="row">
+          <div class="chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="#0a0a0a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="msg">Data submitted successfully.</span>
+        </div>
+        <p>You're on the leaderboard now — check the standings below.</p>
+        <p>Call your friends to join this virtual peloton and compete on the leaderboard.</p>
+      </div>`;
+      return;
+    }
+    inner.innerHTML=`<div class="log-fields">
+      ${errors.form?`<p class="field-err">${esc(errors.form)}</p>`:""}
+      <div>
+        <input type="url" class="log-input js-strava ${errors.strava?'err':''}" placeholder="Strava activity link  *" value="${esc(strava)}" />
+        ${errors.strava?`<p class="field-err">${errors.strava}</p>`:""}
+      </div>
+      <div class="stats-row">
+        <div>
+          <input type="text" class="log-input js-km ${errors.km?'err':''}" placeholder="Distance (km)  *" value="${esc(km)}" />
+          ${errors.km?`<p class="field-err">${errors.km}</p>`:""}
+        </div>
+        <div>
+          <input type="text" class="log-input js-time ${errors.time?'err':''}" placeholder="Time (h:mm)  *" value="${esc(timeStr)}" />
+          ${errors.time?`<p class="field-err">${errors.time}</p>`:""}
+        </div>
+        <div>
+          <input type="text" class="log-input js-elev ${errors.elev?'err':''}" placeholder="Elevation (m)  *" value="${esc(elev)}" />
+          ${errors.elev?`<p class="field-err">${errors.elev}</p>`:""}
+        </div>
+      </div>
+      <div class="upload-slot"></div>
+      <button class="log-submit js-submit" ${submitting?'disabled':''}>${submitting?'Submitting…':"Submit today's effort"} ${icon('arrow',14)}</button>
+    </div>`;
+
+    // upload area
+    const slot=inner.querySelector(".upload-slot");
+    if(preview){
+      const p=el(`<div class="upload-preview"><img src="${preview}" alt="Ride photo"/><button class="rm">${icon('x',12)}</button></div>`);
+      p.querySelector(".rm").onclick=()=>{ image=null;preview=null;draw(); };
+      slot.replaceWith(p);
+    }else{
+      const btn=el(`<button class="upload-btn ${errors.image?'err':''}">${icon('bike',16)}<span class="u-txt">Add ride photo  <span style="color:rgba(10,10,10,.3)">*</span></span></button>`);
+      const file=el(`<input type="file" accept="image/*" style="display:none" />`);
+      btn.onclick=()=>file.click();
+      file.onchange=e=>{
+        const f=e.target.files&&e.target.files[0]; if(!f)return;
+        image=f; delete errors.image;
+        const r=new FileReader(); r.onload=ev=>{ preview=ev.target.result; draw(); }; r.readAsDataURL(f);
+      };
+      slot.replaceWith(btn); btn.after(file);
+      if(errors.image) btn.after(el(`<p class="field-err">${errors.image}</p>`));
+    }
+
+    const si=inner.querySelector(".js-strava");
+    si.oninput=e=>{ strava=e.target.value; delete errors.strava; };
+    inner.querySelector(".js-km").oninput=e=>{ km=e.target.value; delete errors.km; };
+    inner.querySelector(".js-time").oninput=e=>{ timeStr=e.target.value; delete errors.time; };
+    inner.querySelector(".js-elev").oninput=e=>{ elev=e.target.value; delete errors.elev; };
+    inner.querySelector(".js-submit").onclick=async()=>{
+      errors={};
+      if(!strava.trim()||!/strava\.com\//i.test(strava)) errors.strava="A valid Strava activity link is required.";
+      if(!image) errors.image="A photo of your ride is required.";
+      if(!km.trim()||!(Number(km)>0)) errors.km="Enter your distance in km.";
+      const timeMinVal=parseTimeToMin(timeStr);
+      if(!timeStr.trim()||!timeMinVal) errors.time="Enter time as h:mm, e.g. 1:35.";
+      if(!elev.trim()||isNaN(Number(elev))||Number(elev)<0) errors.elev="Enter elevation in metres.";
+      if(Object.keys(errors).length){ draw(); return; }
+
+      submitting=true; draw();
+      try{
+        const res=await fetch("/api/rides",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            stageDate:STAGES[state.todayIdx][0],
+            stravaLink:strava,
+            distanceKm:Number(km),
+            timeMin:timeMinVal,
+            elevationM:Number(elev),
+            photo:preview,
+          }),
+        });
+        let data={}; try{ data=await res.json(); }catch{}
+        if(!res.ok) throw new Error(data.error||"Could not submit your ride.");
+        state.myTodayRide=data.ride;
+        logged=true; submitting=false; draw();
+        await fetchLeaderboard(); renderApp();
+      }catch(err){
+        submitting=false; errors.form=err.message; draw();
+      }
+    };
+  }
+  draw();
+  return wrap;
+}
+
+/* ─── Leaderboard ──────────────────────────────────────────────── */
+function renderLeaderboard(){
+  let lbZone="all", lbSort="time";
+  const zoneOpts=["all",550,1300,2200,3333];
+  const sortOpts=[["time","Time Spent"],["dist","Total Distance"],["elev","Elevation"]];
+
+  const sec=el(`<section id="leaderboard" class="section">
+    <div class="section-head">
+      <div>
+        <h2 class="serif">Leaderboard</h2>
+        <p>Live standings across the Indian peloton — every metric, upfront.</p>
+      </div>
+      <div class="filters">
+        <div class="filter-group js-zone" role="group" aria-label="Distance zone"></div>
+        <div class="filter-group js-sort" role="group" aria-label="Sort by"></div>
+      </div>
+    </div>
+    <div class="table-wrap"><table class="lb-table"><thead></thead><tbody></tbody></table></div>
+  </section>`);
+
+  const zoneG=sec.querySelector(".js-zone"), sortG=sec.querySelector(".js-sort");
+  zoneOpts.forEach(z=>{
+    const b=el(`<button>${z==="all"?"All":z}</button>`);
+    b.onclick=()=>{ lbZone=z; draw(); };
+    b.dataset.z=z; zoneG.appendChild(b);
+  });
+  sortOpts.forEach(([k,l])=>{
+    const b=el(`<button>${l}</button>`);
+    b.onclick=()=>{ lbSort=k; draw(); };
+    b.dataset.s=k; sortG.appendChild(b);
+  });
+
+  const thead=sec.querySelector("thead"), tbody=sec.querySelector("tbody");
+  function draw(){
+    zoneG.querySelectorAll("button").forEach(b=>b.classList.toggle("active",String(b.dataset.z)===String(lbZone)));
+    sortG.querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.s===lbSort));
+
+    const mark=`<span class="sortmark">↑</span>`;
+    thead.innerHTML=`<tr>
+      <th style="width:52px">#</th><th>Rider</th><th>Zone</th>
+      <th class="r ${lbSort==='time'?'on':''}">Time Spent ${lbSort==='time'?mark:''}</th>
+      <th class="r ${lbSort==='dist'?'on':''}">Distance ${lbSort==='dist'?mark:''}</th>
+      <th class="r ${lbSort==='elev'?'on':''}">Elevation ${lbSort==='elev'?mark:''}</th>
+    </tr>`;
+
+    const filtered=RIDERS.filter(r=>lbZone==="all"||r[2]===lbZone);
+    const sorted=[...filtered].sort((a,b)=>{
+      if(lbSort==="time")return toTimeMin(b[3])-toTimeMin(a[3]);
+      if(lbSort==="elev")return b[4]-a[4];
+      return b[5]-a[5];
+    }).slice(0,10);
+
+    tbody.innerHTML=sorted.map((r,i)=>{
+      const first=i===0;
+      const metric=(val,unit,hi)=>`<div class="metric"><span class="val ${hi?'hi':''}">${val}</span><span class="unit">${unit}</span></div>`;
+      return `<tr class="${first?'first':''}">
+        <td class="rank">${pad(i+1)}</td>
+        <td><span class="rider-name">${esc(r[0])}</span><span class="rider-city">${esc(r[1])}</span></td>
+        <td><span class="zone-tag">${r[2].toLocaleString()} km</span></td>
+        <td>${metric(r[3],"hrs",lbSort==="time")}</td>
+        <td>${metric(r[5].toLocaleString(),"km",lbSort==="dist")}</td>
+        <td>${metric(r[4].toLocaleString(),"m",lbSort==="elev")}</td>
+      </tr>`;
+    }).join("");
+  }
+  draw();
+  return sec;
+}
+
+/* ─── Consistency board ────────────────────────────────────────── */
+function renderConsistency(){
+  const ridingStages=STAGES.filter(s=>s[1]!=="Rest").length;
+  const rows=STREAK.map((r,i)=>{
+    const first=i===0, pct=Math.round((r[2]/r[3])*100);
+    return `<tr class="${first?'first':''}">
+      <td class="rank">${pad(i+1)}</td>
+      <td><span class="rider-name">${esc(r[0])}</span><span class="rider-city">${esc(r[1])}</span></td>
+      <td>
+        <div class="progress-cell">
+          <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <span class="progress-num">${r[2]}<span class="of"> / ${r[3]}</span></span>
+        </div>
+      </td>
+      <td style="text-align:right"><span class="streak-days"><span class="n">${r[2]}</span><span class="u">days</span></span></td>
+    </tr>`;
+  }).join("");
+
+  return el(`<section class="section">
+    <div class="section-head">
+      <div>
+        <h2 class="serif">Consistency</h2>
+        <p>Riders who showed up every single day. Ranked by active riding streak across the Tour.</p>
+      </div>
+      <div class="streak-info">${ridingStages} riding stages total</div>
+    </div>
+    <div class="table-wrap"><table class="streak-table">
+      <thead><tr>
+        <th style="width:52px">#</th><th>Rider</th>
+        <th class="r">Stages Completed</th><th class="r">Streak</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+  </section>`);
+}
+
+/* ─── Live France clock ────────────────────────────────────────── */
+function renderClock(){
+  const aside=el(`<aside class="clock" aria-label="Live France time">
+    <em class="fr"><span class="dot"></span>France</em>
+    <div class="t"><strong class="js-time">--:--:--</strong><span class="ampm js-ampm">--</span></div>
+  </aside>`);
+  const tEl=aside.querySelector(".js-time"), aEl=aside.querySelector(".js-ampm");
+  function tick(){
+    const now=new Date();
+    const parts=new Intl.DateTimeFormat("en-US",{hour:"numeric",hour12:true,timeZone:"Europe/Paris"}).formatToParts(now);
+    const hNum=parseInt(parts.find(p=>p.type==="hour").value);
+    const ampm=parts.find(p=>p.type==="dayPeriod").value.toUpperCase();
+    const mm=pad(now.toLocaleString("en-US",{minute:"2-digit",timeZone:"Europe/Paris"}));
+    const ss=pad(now.toLocaleString("en-US",{second:"2-digit",timeZone:"Europe/Paris"}));
+    tEl.textContent=`${pad(hNum)}:${mm}:${ss}`; aEl.textContent=ampm;
+  }
+  tick(); timers.push(setInterval(tick,1000));
+  return aside;
+}
+
+/* ─── Sticky progress ──────────────────────────────────────────── */
+function renderStickyProgress(){
+  const idx=state.todayIdx, todaySeg=STAGES[idx], isRest=todaySeg[1]==="Rest";
+  let stageN=0; STAGES.slice(0,idx+1).forEach(s=>{ if(s[1]!=="Rest")stageN++; });
+  const todayLabel=isRest?"Rest Day":`Stage ${stageN} · ${fmtShort(todaySeg[0])}`;
+
+  const segs=STAGES.map((s,i)=>{
+    const isRestS=s[1]==="Rest", isToday=i===idx, isPast=i<idx;
+    let fill,seg="seg";
+    if(isToday){ seg+=" seg-current"; fill="f-today"; }
+    else if(isRestS)fill="f-rest";
+    else if(isPast)fill="f-past";
+    else fill="f-future";
+    const title=isRestS?`${fmtShort(s[0])} · Rest Day`:`${fmtShort(s[0])} · ${s[1]}`;
+    const marker=isToday?`<div class="marker"><div class="stem"></div><div class="dot"></div></div>`:"";
+    return `<div class="${seg}" title="${esc(title)}"><span class="${fill}"></span>${marker}</div>`;
+  }).join("");
+
+  const foot=el(`<footer class="sticky-progress" aria-label="Tour progress">
+    <div class="sp-head"><span class="l">Your Progress</span><span class="r">${todayLabel}</span></div>
+    <div class="sp-scroll"><div class="sp-track">${segs}</div></div>
+    ${creditLine()}
+  </footer>`);
+  requestAnimationFrame(()=>{
+    const sc=foot.querySelector(".sp-scroll"), cur=foot.querySelector(".seg-current");
+    if(cur) sc.scrollLeft = cur.offsetLeft - sc.clientWidth/2 + cur.offsetWidth/2;
+  });
+  return foot;
+}
+
+/* ─── Modals ───────────────────────────────────────────────────── */
+function openModal(name){ state.modal=name; renderModalLayer(); }
+function closeModal(){
+  if(NAV_MODE==="pages"){ go("home"); return; }
+  state.modal=null; renderModalLayer();
+}
+
+function renderModalLayer(){
+  let layer=document.getElementById("modal-layer");
+  if(!layer){ layer=el(`<div id="modal-layer"></div>`); document.body.appendChild(layer); }
+  layer.innerHTML="";
+  if(!state.modal) return;
+  let node;
+  if(state.modal==="about") node=renderAbout();
+  if(state.modal==="login") node=renderLogin();
+  if(state.modal==="register") node=renderRegister();
+  if(state.modal==="instructions") node=renderInstructions();
+  if(node) layer.appendChild(node);
+}
+// Esc to close
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&state.modal)closeModal(); });
+
+function overlayClose(overlay){
+  overlay.addEventListener("click",e=>{ if(e.target===overlay)closeModal(); });
+}
+
+/* About modal */
+function renderAbout(){
+  const ov=el(`<div class="overlay" role="dialog" aria-modal="true">
+    <div class="about-modal">
+      <button class="about-close" aria-label="Close">${icon('x',22)}</button>
+      <h2 class="serif">What is this?</h2>
+      <p>This is a fan community website created by <strong>Avishek Nayak</strong>, a cycling enthusiast from India. My goal is to build a vibrant cycling community and bring more exposure to the Tour de France for the Indian audience.</p>
+      <p>While cycling is growing rapidly in India, many people still don't know much about the sport, and I want to change that. I am an underdog Indian cyclist who dreams of competing in the Tour de France someday.</p>
+      <p>Please support me on my journey and connect with me here:</p>
+      <ul class="about-links">
+        <li>${icon('instagram',16)}<a href="https://www.instagram.com/avisheknayak.13" target="_blank" rel="noopener noreferrer">avisheknayak.13</a></li>
+        <li>${icon('activity',16)}<a href="https://www.strava.com/athletes/85283746" target="_blank" rel="noopener noreferrer">Avishek Nayak on Strava</a></li>
+        <li>${icon('mail',16)}<a href="mailto:workdesk.avishek@gmail.com">workdesk.avishek@gmail.com</a></li>
+      </ul>
+      <div class="about-official">Official Tour de France:
+        <a href="https://www.letour.fr/en/" target="_blank" rel="noopener noreferrer">letour.fr ${icon('ext',12)}</a>
+      </div>
+    </div></div>`);
+  ov.querySelector(".about-close").onclick=closeModal;
+  overlayClose(ov);
+  return ov;
+}
+
+/* Instructions modal */
+function renderInstructions(){
+  const safety=[
+    "Wear a certified cycling helmet at all times.",
+    "Ensure your bicycle is in safe working condition.",
+    "Obey all traffic rules and local laws.",
+    "Ride predictably and respect pedestrians and other road users.",
+    "Carry water, nutrition and basic repair tools.",
+    "Use front and rear lights when riding in low-light conditions.",
+    "Share your live location with someone if riding alone.",
+    "Avoid using your phone while riding.",
+    "Ride within your own abilities and know when to stop.",
+  ];
+  const fair=[
+    "Complete every stage honestly.",
+    "Do not manipulate GPS data or activity files.",
+    "Any suspicious activity may result in stage disqualification or removal from the event.",
+  ];
+  const li=arr=>arr.map((r,i)=>`<li><span class="rn">${pad(i+1)}</span><span class="rt">${esc(r)}</span></li>`).join("");
+
+  const ov=el(`<div class="overlay scroll" role="dialog" aria-modal="true">
+    <div class="modal w580" style="margin:auto">
+      <div class="modal-header">
+        <div><div class="mh-kicker">Tour de France 2026</div><h2 class="serif">Before Every Stage</h2></div>
+        <button class="modal-close" aria-label="Close">${icon('x',22)}</button>
+      </div>
+      <div class="inst-body">
+        <p class="inst-intro">Please ensure you follow these guidelines before starting your ride.</p>
+        <div>
+          <div class="inst-sect-head"><span class="bar acc"></span><h3 class="serif">Safety</h3></div>
+          <ul class="rule-list">${li(safety)}</ul>
+        </div>
+        <div>
+          <div class="inst-sect-head"><span class="bar pri"></span><h3 class="serif">Fair Play</h3></div>
+          <ul class="rule-list">${li(fair)}</ul>
+        </div>
+      </div>
+      <div class="inst-footer">
+        <p>Ride safe. Ride honest. Represent India well.</p>
+        <button class="js-got">Got it</button>
+      </div>
+    </div></div>`);
+  ov.querySelector(".modal-close").onclick=closeModal;
+  ov.querySelector(".js-got").onclick=closeModal;
+  overlayClose(ov);
+  return ov;
+}
+
+/* Login modal */
+function renderLogin(){
+  let email="",password="",showPw=false,error="";
+  const ov=el(`<div class="overlay" role="dialog" aria-modal="true">
+    <div class="modal w440">
+      <div class="modal-header">
+        <div><div class="mh-kicker">Tour de France 2026</div><h2 class="serif">Welcome back</h2></div>
+        <button class="modal-close" aria-label="Close">${icon('x',22)}</button>
+      </div>
+      <div class="js-form"></div>
+    </div></div>`);
+  const form=ov.querySelector(".js-form");
+
+  function draw(){
+    form.innerHTML=`
+      <div class="fields">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" class="inp js-email" placeholder="arjun@example.com" value="${esc(email)}" autocomplete="email"/>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="relative">
+            <input type="${showPw?'text':'password'}" class="inp js-pw" placeholder="Your password" value="${esc(password)}" style="padding-right:64px" autocomplete="current-password"/>
+            <button type="button" class="pw-toggle js-toggle">${showPw?'Hide':'Show'}</button>
+          </div>
+        </div>
+        ${error?`<p class="err-msg">${error}</p>`:""}
+      </div>
+      <div class="modal-footer">
+        <p>Don't have an account? <button class="switch-link js-switch">Register</button></p>
+        <button class="btn-submit js-submit">Log in ${icon('arrow',16)}</button>
+      </div>`;
+    form.querySelector(".js-email").oninput=e=>{ email=e.target.value; error=""; };
+    form.querySelector(".js-pw").oninput=e=>{ password=e.target.value; error=""; };
+    form.querySelector(".js-toggle").onclick=()=>{ showPw=!showPw; draw(); };
+    form.querySelector(".js-switch").onclick=()=>{ if(NAV_MODE==="pages"){go("register");return;} closeModal(); openModal("register"); };
+    form.querySelector(".js-submit").onclick=async()=>{
+      if(!email.trim()||!password.trim()){ error="Please enter your email and password."; draw(); return; }
+      const btn=form.querySelector(".js-submit"); btn.disabled=true;
+      try{
+        const res=await fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,password})});
+        const data=await res.json();
+        if(!res.ok) throw new Error(data.error||"Login failed.");
+        if(NAV_MODE==="pages"){ window.location.href="home.html"; return; }
+        await applyLoggedInUser(data.user); await fetchLeaderboard();
+        closeModal(); renderApp();
+      }catch(err){
+        error=err.message; draw();
+      }finally{
+        btn.disabled=false;
+      }
+    };
+  }
+  draw();
+  ov.querySelector(".modal-close").onclick=closeModal;
+  overlayClose(ov);
+  return ov;
+}
+
+/* Register modal */
+function renderRegister(){
+  let name="",email="",strava="",zone=null,username="",password="",confirm="",
+      showPw=false,showCf=false,submitted=false,errors={},registeredUser=null;
+
+  const ov=el(`<div class="overlay scroll" role="dialog" aria-modal="true">
+    <div class="modal w660" style="margin:auto">
+      <div class="modal-header">
+        <div><div class="mh-kicker">Tour de France 2026</div><h2 class="serif">Join the Peloton</h2></div>
+        <button class="modal-close" aria-label="Close">${icon('x',22)}</button>
+      </div>
+      <div class="js-body"></div>
+    </div></div>`);
+  const body=ov.querySelector(".js-body");
+
+  function validate(){
+    const e={};
+    if(!name.trim())e.name="Please enter your full name.";
+    if(!email.trim())e.email="Please enter your email.";
+    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))e.email="Enter a valid email address.";
+    if(!strava.trim())e.strava="Please enter your Strava athlete link.";
+    else if(!/strava\.com\/athletes\//i.test(strava))e.strava="Must be a strava.com/athletes/… link.";
+    if(!zone)e.zone="Please select a zone.";
+    if(!username.trim())e.username="Choose a username.";
+    else if(username.length<3)e.username="Username must be at least 3 characters.";
+    else if(!/^[a-z0-9_.]+$/i.test(username))e.username="Only letters, numbers, dots and underscores.";
+    if(!password)e.password="Please create a password.";
+    else if(password.length<8)e.password="Password must be at least 8 characters.";
+    if(!confirm)e.confirm="Please confirm your password.";
+    else if(confirm!==password)e.confirm="Passwords do not match.";
+    return e;
+  }
+
+  function draw(){
+    if(submitted){
+      const z=ZONES.find(z=>z.km===zone);
+      body.innerHTML=`<div class="reg-success">
+        <div class="ico">${icon('bike',24)}</div>
+        <div>
+          <h3 class="serif">Welcome, ${esc(name.split(" ")[0])}.</h3>
+          <p>You're registered as <strong>@${esc(username)}</strong> in the <strong>${z.label} — ${z.tag}</strong> zone. Your Strava will be verified within 24h and you'll appear on the leaderboard shortly after.</p>
+        </div>
+        <button class="back js-back">Back to the race</button>
+      </div>`;
+      body.querySelector(".js-back").onclick=async()=>{
+        if(NAV_MODE==="pages"){ window.location.href="home.html"; return; }
+        if(registeredUser){ await applyLoggedInUser(registeredUser); } else { state.isLoggedIn=true; state.activeZone=zone; }
+        await fetchLeaderboard();
+        closeModal(); renderApp();
+      };
+      return;
+    }
+
+    const pwStrength=password.length===0?0:password.length<8?1:password.length<12?2:3;
+    const pwLabel=["","Weak","Good","Strong"][pwStrength];
+
+    const zoneCards=ZONES.map(z=>{
+      const sel=zone===z.km;
+      return `<button type="button" class="zone-card ${sel?'sel':''}" data-km="${z.km}">
+        <div class="zc-top">
+          <span class="zc-km serif">${z.label}</span>
+          <span class="zc-tag">${z.tag}</span>
+        </div>
+        <p class="zc-desc">${z.desc}</p>
+      </button>`;
+    }).join("");
+
+    body.innerHTML=`
+      <div class="fields">
+        ${errors.form?`<p class="err-msg" style="margin-bottom:4px">${esc(errors.form)}</p>`:""}
+        <div class="grid2">
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" class="inp js-name ${errors.name?'err':''}" placeholder="Arjun Nair" value="${esc(name)}" autocomplete="name"/>
+            ${errors.name?`<p class="err-msg">${errors.name}</p>`:""}
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" class="inp js-email ${errors.email?'err':''}" placeholder="arjun@example.com" value="${esc(email)}" autocomplete="email"/>
+            ${errors.email?`<p class="err-msg">${errors.email}</p>`:""}
+          </div>
+        </div>
+        <div class="field">
+          <label>Strava Athlete Link</label>
+          <input type="url" class="inp js-strava ${errors.strava?'err':''}" placeholder="https://www.strava.com/athletes/12345678" value="${esc(strava)}"/>
+          ${errors.strava?`<p class="err-msg">${errors.strava}</p>`
+            :`<p class="field-hint">${icon('activity',11)}Your profile must be set to <strong>public</strong>.</p>`}
+        </div>
+        <div class="field">
+          <label>Choose Your Zone</label>
+          <div class="zone-grid">${zoneCards}</div>
+          ${errors.zone?`<p class="err-msg">${errors.zone}</p>`:""}
+        </div>
+        <div class="field">
+          <label>Username</label>
+          <div class="relative">
+            <span class="at-prefix">@</span>
+            <input type="text" class="inp js-username ${errors.username?'err':''}" placeholder="arjun_nair" value="${esc(username)}" style="padding-left:32px" autocomplete="username"/>
+          </div>
+          ${errors.username?`<p class="err-msg">${errors.username}</p>`
+            :`<p class="field-hint">This will appear on the leaderboard. Letters, numbers, dots and underscores only.</p>`}
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label>Create Password</label>
+            <div class="relative">
+              <input type="${showPw?'text':'password'}" class="inp js-pw ${errors.password?'err':''}" placeholder="Min. 8 characters" value="${esc(password)}" style="padding-right:52px" autocomplete="new-password"/>
+              <button type="button" class="pw-toggle js-tpw">${showPw?'Hide':'Show'}</button>
+            </div>
+            ${password.length>0?`<div class="pw-strength"><div class="pw-bars">
+              ${[1,2,3].map(l=>`<div class="${pwStrength>=l?'s'+pwStrength:''}"></div>`).join("")}
+            </div><span class="plabel">${pwLabel}</span></div>`:""}
+            ${errors.password?`<p class="err-msg">${errors.password}</p>`:""}
+          </div>
+          <div class="field">
+            <label>Confirm Password</label>
+            <div class="relative">
+              <input type="${showCf?'text':'password'}" class="inp js-cf ${errors.confirm?'err':''}" placeholder="Repeat password" value="${esc(confirm)}" style="padding-right:52px" autocomplete="new-password"/>
+              <button type="button" class="pw-toggle js-tcf">${showCf?'Hide':'Show'}</button>
+            </div>
+            ${errors.confirm?`<p class="err-msg">${errors.confirm}</p>`:""}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <p>Already have an account? <button class="switch-link js-switch">Log in</button></p>
+        <button class="btn-submit js-submit">Register for the ride ${icon('arrow',16)}</button>
+      </div>`;
+
+    const q=s=>body.querySelector(s);
+    q(".js-name").oninput=e=>{ name=e.target.value; delete errors.name; };
+    q(".js-email").oninput=e=>{ email=e.target.value; delete errors.email; };
+    q(".js-strava").oninput=e=>{ strava=e.target.value; delete errors.strava; };
+    q(".js-username").oninput=e=>{ username=e.target.value.toLowerCase(); e.target.value=username; delete errors.username; };
+    q(".js-pw").oninput=e=>{ password=e.target.value; delete errors.password; delete errors.confirm;
+      // live-update strength bar without losing focus
+      const wrap=e.target.closest(".field");
+      const ps=password.length===0?0:password.length<8?1:password.length<12?2:3;
+      const lbl=["","Weak","Good","Strong"][ps];
+      let s=wrap.querySelector(".pw-strength");
+      const barsHTML=[1,2,3].map(l=>`<div class="${ps>=l?'s'+ps:''}"></div>`).join("");
+      if(password.length>0){
+        if(!s){ s=el(`<div class="pw-strength"><div class="pw-bars">${barsHTML}</div><span class="plabel">${lbl}</span></div>`); e.target.closest(".relative").after(s); }
+        else{ s.querySelector(".pw-bars").innerHTML=barsHTML; s.querySelector(".plabel").textContent=lbl; }
+      } else if(s){ s.remove(); }
+    };
+    q(".js-cf").oninput=e=>{ confirm=e.target.value; delete errors.confirm; };
+    q(".js-tpw").onclick=()=>{ showPw=!showPw; draw(); };
+    q(".js-tcf").onclick=()=>{ showCf=!showCf; draw(); };
+    q(".js-switch").onclick=()=>{ if(NAV_MODE==="pages"){go("login");return;} closeModal(); openModal("login"); };
+    body.querySelectorAll(".zone-card").forEach(c=>{
+      c.onclick=()=>{ zone=+c.dataset.km; delete errors.zone; draw(); };
+    });
+    q(".js-submit").onclick=async()=>{
+      errors=validate();
+      if(Object.keys(errors).length){ draw(); return; }
+      const btn=q(".js-submit"); btn.disabled=true;
+      try{
+        const res=await fetch("/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fullName:name,email,stravaId:strava,zone,username,password})});
+        const data=await res.json();
+        if(!res.ok) throw new Error(data.error||"Registration failed.");
+        registeredUser=data.user;
+        submitted=true; draw();
+      }catch(err){
+        errors={form:err.message}; draw();
+      }finally{
+        if(btn) btn.disabled=false;
+      }
+    };
+  }
+  draw();
+  ov.querySelector(".modal-close").onclick=closeModal;
+  overlayClose(ov);
+  return ov;
+}
+
+/* ─── Home / hero ──────────────────────────────────────────────── */
+function renderHome(){
+  const frag=document.createDocumentFragment();
+
+  // Hero
+  const hero=el(`<section class="hero"><div class="hero-grid"></div><div class="hero-mobile"></div></section>`);
+  const grid=hero.querySelector(".hero-grid"), mob=hero.querySelector(".hero-mobile");
+
+  // desktop
+  const left=el(`<div class="hero-left"></div>`);
+  left.appendChild(renderRouteMap());
+  left.appendChild(renderStageList());
+  grid.appendChild(left);
+  grid.appendChild(state.isLoggedIn?renderYourStageActive():renderYourStageEmpty());
+
+  // mobile
+  mob.appendChild(renderRouteMap());
+  if(state.isLoggedIn){
+    mob.appendChild(renderYourStageActive());
+  }else{
+    const wrap=el(`<div style="border-top:1px solid var(--border)"></div>`);
+    wrap.appendChild(renderStageList());
+    mob.appendChild(wrap);
+  }
+  frag.appendChild(hero);
+
+  // mobile floating CTA
+  if(!state.isLoggedIn){
+    const f=el(`<div class="mobile-float"><button>Register for this ride ${icon('arrow',15)}</button></div>`);
+    f.querySelector("button").onclick=()=>openOrGo("register");
+    frag.appendChild(f);
+  }
+
+  // leaderboard + consistency
+  const board=el(`<div id="leaderboard"></div>`);
+  board.appendChild(renderLeaderboard());
+  board.appendChild(renderConsistency());
+  frag.appendChild(board);
+
+  return frag;
+}
+
+/* ─── Root render ──────────────────────────────────────────────── */
+function renderApp(){
+  clearTimers();
+  const app=document.getElementById("app");
+  app.innerHTML="";
+  const shell=el(`<div class="shell"></div>`);
+  shell.appendChild(renderNav());
+  shell.appendChild(renderMarquee());
+  const main=el(`<div style="flex:1;display:flex;flex-direction:column"></div>`);
+  main.appendChild(renderHome());
+  shell.appendChild(main);
+  app.appendChild(shell);
+  app.appendChild(renderClock());
+  app.appendChild(renderStickyProgress());
+  renderModalLayer();
+}
+
+/* ─── Standalone modal-page renderer ───────────────────────────── */
+/* Renders a single modal centered on a plain page (used by the
+   separate register/login/about pages). Close/back navigate home. */
+function renderStandaloneModal(name){
+  document.body.classList.add("standalone-page");
+  const app=document.getElementById("app");
+  app.innerHTML="";
+  let node;
+  if(name==="about") node=renderAbout();
+  else if(name==="login") node=renderLogin();
+  else if(name==="register") node=renderRegister();
+  else if(name==="instructions") node=renderInstructions();
+  if(node) app.appendChild(node);
+  document.body.appendChild(el(creditLine(true)));
+}
+
+/* ─── Init ─────────────────────────────────────────────────────── */
+(async function boot(){
+  const page = window.__TDF_PAGE__ || "app";
+  if(page==="app"){
+    try{
+      const res=await fetch("/api/me");
+      if(res.ok){
+        const {user}=await res.json();
+        await applyLoggedInUser(user);
+      }
+    }catch{}
+    await fetchLeaderboard();
+    renderApp();
+  }else{
+    renderStandaloneModal(page);
+  }
+})();
+
+</script>
+</body>
+</html>
