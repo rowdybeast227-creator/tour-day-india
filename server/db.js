@@ -9,6 +9,13 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
+// A pooled/idle client can drop (network blip, the provider recycling the
+// connection, etc.) at any time. Without this listener, pg's default
+// behavior is to treat that as an unhandled error and crash the process.
+pool.on("error", (err) => {
+  console.error("Unexpected error on idle Postgres client:", err.message);
+});
+
 let initPromise = null;
 
 function init() {

@@ -247,6 +247,8 @@ tr.first .progress-fill{background:rgba(10,10,10,.6)}
 
 /* ─── Credit line ──────────────────────────────────────────────── */
 .credit-line{font-size:10px;color:rgba(10,10,10,.4);text-align:center;letter-spacing:.03em;padding-top:6px}
+.credit-line a{color:rgba(10,10,10,.55);border-bottom:1px solid rgba(10,10,10,.25);padding-bottom:1px;transition:.15s;pointer-events:auto}
+.credit-line a:hover{color:var(--primary);border-color:var(--accent)}
 .credit-fixed{position:fixed;left:0;right:0;bottom:10px;z-index:45;pointer-events:none}
 
 /* ─── Mobile floating CTA ──────────────────────────────────────── */
@@ -362,6 +364,7 @@ tr.first .progress-fill{background:rgba(10,10,10,.6)}
   .nav-inner{padding:10px 20px}
   .section{padding:56px 20px}
   .mobile-float{display:block}
+  .clock{bottom:160px;padding:10px 12px}
   .grid2{grid-template-columns:1fr}
   .zone-grid{grid-template-columns:1fr}
   .fields{padding:28px 24px 8px}
@@ -369,7 +372,7 @@ tr.first .progress-fill{background:rgba(10,10,10,.6)}
   .modal-footer{padding:20px 24px}
 }
 @media (max-width:480px){
-  .clock{right:12px;bottom:76px;padding:10px 12px}
+  .clock{right:12px;bottom:160px;padding:10px 12px}
 }
 
 /* ─── Standalone modal pages ───────────────────────────────────── */
@@ -504,7 +507,7 @@ function getStageDeadline(idx){
   if(type==="Rest") return null;
   const [h,m]=STAGE_END_OVERRIDES[date]||STAGE_END_CEST[type]||[17,15];
   const endUtc=new Date(`${date}T${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:00+02:00`);
-  return new Date(endUtc.getTime()+8*3600*1000);
+  return new Date(endUtc.getTime()+12*3600*1000);
 }
 const pad=n=>String(n).padStart(2,"0");
 function el(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
@@ -522,7 +525,7 @@ const IC={
   ext:'<svg class="icon" width="_S_" height="_S_" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>',
 };
 function icon(name,size=18){ return IC[name].replace(/_S_/g,size); }
-function creditLine(fixed){ return `<div class="credit-line${fixed?' credit-fixed':''}">Designed by Avishek, Developed by Deb</div>`; }
+function creditLine(fixed){ return `<div class="credit-line${fixed?' credit-fixed':''}">Designed by <a href="https://www.linkedin.com/in/avisheknayak/" target="_blank" rel="noopener noreferrer">Avishek</a>, Developed by <a href="https://www.linkedin.com/in/deb-sundar-khan-0470782a1/" target="_blank" rel="noopener noreferrer">Deb</a></div>`; }
 
 /* ─── App state ────────────────────────────────────────────────── */
 const state = {
@@ -699,15 +702,15 @@ function renderDeadline(idx){
         <div>
           <div class="dl-lbl">${isExpired?"Submission closed":"Time to submit"}</div>
           ${isExpired
-            ?`<p class="dl-expired">The 8-hour upload window has closed for this stage.</p>`
+            ?`<p class="dl-expired">The 12-hour upload window has closed for this stage.</p>`
             :`<div style="display:flex;align-items:baseline;gap:4px">
                 <span class="dl-time">${pad(hh)}:${pad(mm)}:${pad(ss)}</span>
                 ${isUrgent?`<span class="dl-urgent-tag">urgent</span>`:""}
               </div>`}
         </div>
-        ${isExpired?"":`<div class="dl-right"><div>Stage ends ~${endLabel}</div><div>+8 h buffer · ${dlLabel} CEST deadline</div></div>`}
+        ${isExpired?"":`<div class="dl-right"><div>Stage ends ~${endLabel}</div><div>+12 h buffer · ${dlLabel} CEST deadline</div></div>`}
       </div>
-      ${isExpired?"":`<div class="deadline-bar"><span style="width:${Math.min(100,(ms/(8*3600*1000))*100)}%"></span></div>`}`;
+      ${isExpired?"":`<div class="deadline-bar"><span style="width:${Math.min(100,(ms/(12*3600*1000))*100)}%"></span></div>`}`;
   }
   tick(); timers.push(setInterval(tick,1000));
   return wrap;
